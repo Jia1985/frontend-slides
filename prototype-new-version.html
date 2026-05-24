@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frontend Slides - New Version (Tabbed Webpage)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', sans-serif;
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        /* Fixed Navigation Header */
+        .nav-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-bottom: 2px solid #e0e0e0;
+            padding: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 0;
+            padding: 0 20px;
+            height: 70px;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #667eea;
+            margin-right: auto;
+            white-space: nowrap;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 0;
+            align-items: center;
+            overflow-x: auto;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .nav-tab {
+            padding: 24px 24px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-size: 1rem;
+            color: #999;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+            white-space: nowrap;
+            position: relative;
+        }
+
+        .nav-tab:hover {
+            color: #667eea;
+        }
+
+        .nav-tab.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-top: 70px;
+            min-height: calc(100vh - 70px);
+        }
+
+        .page {
+            display: none;
+            min-height: calc(100vh - 70px);
+            padding: 60px 40px;
+            background: white;
+        }
+
+        .page.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .page-wrapper {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .page h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 40px;
+        }
+
+        .page-section {
+            margin-bottom: 50px;
+        }
+
+        .page-section h2 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .page-section p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 15px;
+        }
+
+        .feature-list {
+            list-style: none;
+            margin: 20px 0;
+        }
+
+        .feature-list li {
+            padding: 12px 0;
+            padding-left: 30px;
+            position: relative;
+            font-size: 1.05rem;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .feature-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .code-block {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 0.95rem;
+            color: #333;
+            overflow-x: auto;
+            margin: 20px 0;
+            border-left: 4px solid #667eea;
+        }
+
+        .style-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .style-card {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            transition: all 0.3s ease;
+        }
+
+        .style-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+        }
+
+        .style-card h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .style-card p {
+            font-size: 0.95rem;
+            color: #666;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-content {
+                height: 60px;
+                padding: 0 15px;
+            }
+
+            .nav-tabs {
+                gap: 0;
+            }
+
+            .nav-tab {
+                padding: 20px 12px;
+                font-size: 0.9rem;
+            }
+
+            .logo {
+                font-size: 1rem;
+                margin-right: 10px;
+            }
+
+            .main-content {
+                margin-top: 60px;
+            }
+
+            .page {
+                min-height: calc(100vh - 60px);
+                padding: 40px 20px;
+            }
+
+            .page h1 {
+                font-size: 1.8rem;
+            }
+
+            .page-section h2 {
+                font-size: 1.4rem;
+            }
+
+            .style-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-content {
+                gap: 5px;
+            }
+
+            .nav-tab {
+                padding: 16px 8px;
+                font-size: 0.8rem;
+            }
+
+            .page h1 {
+                font-size: 1.5rem;
+            }
+
+            .page-section h2 {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Fixed Navigation Header -->
+    <header class="nav-header">
+        <div class="nav-content">
+            <div class="logo">🎨 Frontend Slides</div>
+            <nav class="nav-tabs">
+                <button class="nav-tab active" onclick="navigateToPage(0)">Overview</button>
+                <button class="nav-tab" onclick="navigateToPage(1)">Features</button>
+                <button class="nav-tab" onclick="navigateToPage(2)">Styles</button>
+                <button class="nav-tab" onclick="navigateToPage(3)">Getting Started</button>
+                <button class="nav-tab" onclick="navigateToPage(4)">Sharing</button>
+                <button class="nav-tab" onclick="navigateToPage(5)">Philosophy</button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Page 1: Overview -->
+        <section class="page active">
+            <div class="page-wrapper">
+                <h1>🎨 Overview</h1>
+                <p class="page-subtitle">Create beautiful, animation-rich presentations without design skills</p>
+                
+                <div class="page-section">
+                    <h2>What is Frontend Slides?</h2>
+                    <p>Frontend Slides is a Claude Code skill designed for anyone who wants to create stunning web presentations without needing to know CSS or JavaScript. It uses a "show, don't tell" approach—instead of describing your aesthetic preferences, you pick from generated visual previews.</p>
+                </div>
+
+                <div class="page-section">
+                    <h2>Why Choose Frontend Slides?</h2>
+                    <ul class="feature-list">
+                        <li>No design experience needed—AI-powered visual recommendations</li>
+                        <li>Single HTML file output—no build tools, frameworks, or dependencies</li>
+                        <li>Convert existing PowerPoint files directly to web format</li>
+                        <li>Responsive, accessible code you can customize</li>
+                        <li>Deploy to live URLs or export to PDF in seconds</li>
+                    </ul>
+                </div>
+
+                <div class="page-section">
+                    <h2>Perfect For</h2>
+                    <p>Pitch decks, product launches, conference talks, educational content, portfolio showcases, and any presentation where you want to impress without the learning curve.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Page 2: Features -->
+        <section class="page">
+            <div class="page-wrapper">
+                <h1>✨ Key Features</h1>
+                <p class="page-subtitle">Everything you need to create professional presentations</p>
+
+                <div class="page-section">
+                    <h2>Zero Dependencies</h2>
+                    <p>Every presentation is a single HTML file with inline CSS and JavaScript. No npm, no build tools, no frameworks. Your slides will work perfectly in 5 years, 10 years, forever.</p>
+                </div>
+
+                <div class="page-section">
+                    <h2>Visual Style Discovery</h2>
+                    <p>Can't articulate your design preferences? That's okay. Tell us the vibe you're going for, and we'll generate 3 completely different visual styles. Pick your favorite, and we build from there.</p>
+                </div>
+
+                <div class="page-section">
+                    <h2>PowerPoint Conversion</h2>
+                    <p>Have an existing presentation? Convert it to web-based slides in seconds. We extract all text, images, and layout structure—preserving your content while giving it a modern, interactive format.</p>
+                    <div class="code-block">
+/frontend-slides
+
+> "Convert my presentation.pptx to a web slideshow"
+                    </div>
+                </div>
+
+                <div class="page-section">
+                    <h2>Anti-AI-Slop Design</h2>
+                    <p>Curated, distinctive styles that avoid generic AI aesthetics. No purple gradients on white unless you specifically ask for it. Every presentation feels custom-crafted, not template-generated.</p>
+                </div>
+
+                <div class="page-section">
+                    <h2>Production Quality</h2>
+                    <p>Accessible, responsive, well-commented code. Presentations work seamlessly on phones, tablets, and desktops. And if you want to customize further, the code is clear and easy to modify.</p>
+                </div>
+
+                <div class="page-section">
+                    <h2>Deploy & Share</h2>
+                    <p>One command deploys your slides to a permanent, shareable URL. Or export to PDF for email, Slack, and Notion. Share anywhere, on any device.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Page 3: Styles -->
+        <section class="page">
+            <div class="page-wrapper">
+                <h1>🎨 Curated Style Presets</h1>
+                <p class="page-subtitle">12 distinctive themes designed for different moods and purposes</p>
+
+                <div class="page-section">
+                    <h2>Dark Themes</h2>
+                    <div class="style-grid">
+                        <div class="style-card">
+                            <h3>Bold Signal</h3>
+                            <p>Confident, high-impact, vibrant card on dark background. Perfect for startups and tech pitches.</p>
+                        </div>
+                        <div class="style-card">
+                            <h3>Electric Studio</h3>
+                            <p>Clean, professional, split-panel layout. Ideal for design portfolios and agency work.</p>
+                        </div>
+                        <div class="style-card">
+                            <h3>Creative Voltage</h3>
+                            <p>Energetic, retro-modern with electric blue and neon accents. Great for creative industries.</p>
+                        </div>
+                        <div class="style-card">
+                            <h3>Dark Botanical</h3>
+                            <p>Elegant, sophisticated with warm accents. Perfect for luxury and lifestyle brands.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="page-section">
+                    <h2>Light Themes</h2>
+                    <div class="style-grid">
+                        <div class="style-card">
+                            <h3>Notebook Tabs</h3>
+                            <p>Editorial, organized, paper with colorful tabs. Ideal for educational content.</p>
+                        </div>
+                        <div class="style-card">
+                            <h3>Pastel Geometry</h3>
+                            <p>Friendly, approachable, vertical pills. Perfect for consumer products and SaaS.</p>
+                        </div>
+                        <div class="style-card">
+                            <h3>Split Pastel</h3>
+                            <p>Playful, modern, two-color vertical split. Great for lifestyle and wellness brands.</p>
+                        </div>
+                        <div class="style-card">
+                            <h3>Vintage Editorial</h3>
+                            <p>Witty, personality-driven with geometric shapes. Perfect for personal brands.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="page-section">
+                    <h2>Specialty Themes</h2>
+                    <div class="style-grid">
+                        <div class="style-card">
+                            <h3>Neon Cyber</h3>
+                            <p>Futuristic, particle backgrounds, neon glow effects. For tech and gaming.</p>
+                        </div>
+                        <div class="style-card">
+                            <h3>Terminal Green</h3>
+                            <p>Developer-focused, hacker aesthetic. Perfect for technical talks and dev conferences.</p>
+                        </div>
+                        <div class="style-card">
+                            <h3>Swiss Modern</h3>
+                            <p>Minimal, Bauhaus-inspired, geometric precision. Great for corporate presentations.</p>
+                        </div>
+                        <div class="style-card">
+                            <h3>Paper & Ink</h3>
+                            <p>Literary, drop caps, pull quotes. Ideal for storytelling and narrative content.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Page 4: Getting Started -->
+        <section class="page">
+            <div class="page-wrapper">
+                <h1>🚀 Getting Started</h1>
+                <p class="page-subtitle">Three ways to get Frontend Slides up and running</p>
+
+                <div class="page-section">
+                    <h2>Option 1: Plugin Marketplace (Recommended)</h2>
+                    <p>The easiest way to get started. Just run two commands in Claude Code:</p>
+                    <div class="code-block">
+/plugin marketplace add zarazhangrui/frontend-slides
+/plugin install frontend-slides@frontend-slides
+                    </div>
+                    <p>Then use it by typing <code>/frontend-slides</code> in Claude Code.</p>
+                </div>
+
+                <div class="page-section">
+                    <h2>Option 2: Manual Installation</h2>
+                    <p>Copy skill files to your Claude Code skills directory:</p>
+                    <div class="code-block">
+mkdir -p ~/.claude/skills/frontend-slides/scripts
+cp SKILL.md STYLE_PRESETS.md viewport-base.css ~/.claude/skills/frontend-slides/
+cp scripts/extract-pptx.py ~/.claude/skills/frontend-slides/scripts/
+                    </div>
+                </div>
+
+                <div class="page-section">
+                    <h2>Option 3: Clone from GitHub</h2>
+                    <p>Get the latest development version:</p>
+                    <div class="code-block">
+git clone https://github.com/zarazhangrui/frontend-slides.git ~/.claude/skills/frontend-slides
+                    </div>
+                </div>
+
+                <div class="page-section">
+                    <h2>Create Your First Presentation</h2>
+                    <ol style="margin-left: 30px; color: #555;">
+                        <li style="margin-bottom: 10px;">Type <code>/frontend-slides</code> in Claude Code</li>
+                        <li style="margin-bottom: 10px;">Describe your content (topic, slides, images)</li>
+                        <li style="margin-bottom: 10px;">Tell us the vibe (impressed, excited, calm, creative, etc.)</li>
+                        <li style="margin-bottom: 10px;">Review and pick your favorite visual style</li>
+                        <li style="margin-bottom: 10px;">Watch as we generate your complete presentation</li>
+                        <li>Open it in your browser and start presenting!</li>
+                    </ol>
+                </div>
+
+                <div class="page-section">
+                    <h2>Requirements</h2>
+                    <ul class="feature-list">
+                        <li>Claude Code CLI installed</li>
+                        <li>For PPT conversion: Python with python-pptx library</li>
+                        <li>For URL deployment: Node.js + Vercel account (free)</li>
+                        <li>For PDF export: Node.js (Playwright installs automatically)</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Page 5: Sharing -->
+        <section class="page">
+            <div class="page-wrapper">
+                <h1>🌐 Sharing & Export Options</h1>
+                <p class="page-subtitle">Multiple ways to share your presentations with the world</p>
+
+                <div class="page-section">
+                    <h2>Deploy to a Live URL</h2>
+                    <p>After creating a presentation, deploy it to a permanent, shareable URL that works on any device:</p>
+                    <div class="code-block">
+bash scripts/deploy.sh ./my-deck/
+# or
+bash scripts/deploy.sh ./presentation.html
+                    </div>
+                    <p>Uses Vercel's free tier. The script walks you through signup and login if it's your first time. Your presentation is instantly live and shareable.</p>
+                </div>
+
+                <div class="page-section">
+                    <h2>Export to PDF</h2>
+                    <p>Convert your slides to a static PDF for email, Slack, Notion, or printing:</p>
+                    <div class="code-block">
+bash scripts/export-pdf.sh ./my-deck/index.html
+bash scripts/export-pdf.sh ./presentation.html ./output.pdf
+                    </div>
+                    <p>Uses Playwright to screenshot each slide at 1920×1080 and combine into a PDF. Installs automatically if needed. Note: Animations are not preserved in the PDF version.</p>
+                </div>
+
+                <div class="page-section">
+                    <h2>Share as HTML</h2>
+                    <p>Since each presentation is a single HTML file, you can:</p>
+                    <ul class="feature-list">
+                        <li>Email it directly—works in any email attachment</li>
+                        <li>Host on any server—no special configuration needed</li>
+                        <li>Put on Google Drive or Dropbox—opens in any browser</li>
+                        <li>Upload to GitHub and share the link</li>
+                        <li>No dependencies means it works forever, offline too</li>
+                    </ul>
+                </div>
+
+                <div class="page-section">
+                    <h2>Collaboration & Feedback</h2>
+                    <p>Share the live URL or PDF with your team. Since presentations are fully responsive, they look perfect on phones and tablets. Feedback can be collected through comments, or you can iterate quickly by regenerating with updated content.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Page 6: Philosophy -->
+        <section class="page">
+            <div class="page-wrapper">
+                <h1>💭 Our Philosophy</h1>
+                <p class="page-subtitle">The beliefs that shaped Frontend Slides</p>
+
+                <div class="page-section">
+                    <h2>1. You Don't Need to Be a Designer</h2>
+                    <p>You just need to react to what you see. Beautiful design doesn't require a degree—it requires iteration and feedback. We generate options, you pick the one that feels right. That's the whole process.</p>
+                </div>
+
+                <div class="page-section">
+                    <h2>2. Dependencies Are Technical Debt</h2>
+                    <p>A single HTML file will work in 10 years. A React project from 2019? You'll spend more time upgrading dependencies than actually using it. We chose simplicity and longevity over trendy frameworks.</p>
+                </div>
+
+                <div class="page-section">
+                    <h2>3. Generic Is Forgettable</h2>
+                    <p>Every presentation should feel custom-crafted, not template-generated. Our 12 styles are distinctive, opinionated, and designed to stand out. No purple gradients unless you ask for it.</p>
+                </div>
+
+                <div class="page-section">
+                    <h2>4. Comments Are Kindness</h2>
+                    <p>Code should explain itself—to future-you, to collaborators, to anyone who opens it. When we generate your HTML, it includes clear, thoughtful comments so you can customize with confidence.</p>
+                </div>
+
+                <div class="page-section">
+                    <h2>5. Show, Don't Tell</h2>
+                    <p>Rather than asking you to describe your aesthetic or download a 50-page template guide, we show you visual options. Pick what you like. Learn by seeing, not reading.</p>
+                </div>
+
+                <div class="page-section">
+                    <h2>Inspired By</h2>
+                    <p>Frontend Slides was born from the "Vibe Coding" philosophy—the idea that you don't need to be a traditional software engineer to build beautiful things. You need judgment, iteration, and tools that get out of your way.</p>
+                </div>
+
+                <div class="page-section">
+                    <h2>Open Source & MIT Licensed</h2>
+                    <p>Use it, modify it, share it. Contribute back if you improve it. The code is yours to do with as you see fit.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const pages = document.querySelectorAll('.page');
+        const navTabs = document.querySelectorAll('.nav-tab');
+        let currentPage = 0;
+
+        function navigateToPage(index) {
+            // Hide all pages
+            pages.forEach(page => page.classList.remove('active'));
+            navTabs.forEach(tab => tab.classList.remove('active'));
+
+            // Show selected page
+            currentPage = index;
+            pages[currentPage].classList.add('active');
+            navTabs[currentPage].classList.add('active');
+
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') navigateToPage((currentPage + 1) % pages.length);
+            if (e.key === 'ArrowLeft') navigateToPage((currentPage - 1 + pages.length) % pages.length);
+        });
+    </script>
+</body>
+</html>
